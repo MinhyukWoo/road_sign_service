@@ -1,9 +1,12 @@
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function WelcomePage() {
   const navigate = useNavigate();
+  useEffect(() => {
+    navigate('/images');
+  });
   return (
     <Button
       onClick={() => {
