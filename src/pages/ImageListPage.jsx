@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import SearchIcon from '@mui/icons-material/Search';
-import axios from 'axios';
+// import axios from 'axios';
 import ImagesView from '../components/view/ImageListView';
 import sampleImageContents from '../jsonDataset/sampleDetailImageContents.json';
 
@@ -65,26 +65,41 @@ const descendingDate = (a, b) => Date.parse(b.date) - Date.parse(a.date);
 function ImageListPage() {
   const [searchedName, setSearchedName] = useState('');
   const [images, setImages] = useState([]);
+
   useEffect(() => {
-    axios
-      .post('https://bitwise.ljlee37.com:8080/imageList', {
-        user_id: 'test',
-      })
-      .then((response) => {
-        const out = response.data.queryResult.map((image) => ({
-          key: image.hash,
-          alt: decodeURIComponent(image.name),
-          url: image.path,
-          date: image.upload_date_time,
-        }));
-        return out;
-      })
-      .then((data) => {
-        setImages(() => data);
-      })
-      .catch(() => {
-        setImages(() => sampleImageContents);
-      });
+    // axios
+    //   .post('https://bitwise.ljlee37.com:8080/imageList', {
+    //     user_id: 'test',
+    //   })
+    //   .then((response) => {
+    //     const out = response.data.queryResult.map((image) => ({
+    //       key: image.hash,
+    //       alt: decodeURIComponent(image.name),
+    //       url: image.path,
+    //       date: image.upload_date_time,
+    //     }));
+    //     return out;
+    //   })
+    //   .then((data) => {
+    //     setImages(() => data);
+    //   })
+    //   .catch(() => {
+    //     setImages(() =>
+    //       sampleImageContents.map((content) => {
+    //         console.log(`${process.env.PUBLIC_URL}${content.url}`);
+    //         return {
+    //           ...content,
+    //           url: `${process.env.PUBLIC_URL}${content.url}`,
+    //         };
+    //       }),
+    //     );
+    //   });
+    setImages(() =>
+      sampleImageContents.map((content) => ({
+        ...content,
+        url: `${process.env.PUBLIC_URL}${content.url}`,
+      })),
+    );
   }, []);
 
   const onImageUrlDelete = (key) => {
@@ -96,16 +111,17 @@ function ImageListPage() {
         } 이미지를 삭제하시겠습니까?`,
       )
     ) {
-      axios
-        .delete('https://bitwise.ljlee37.com:8080/image', {
-          data: {
-            user_id: 'test',
-            imageId: key,
-          },
-        })
-        .then(() => {
-          setImages((state) => state.filter((item) => item.key !== key));
-        });
+      // axios
+      //   .delete('https://bitwise.ljlee37.com:8080/image', {
+      //     data: {
+      //       user_id: 'test',
+      //       imageId: key,
+      //     },
+      //   })
+      //   .then(() => {
+      //     setImages((state) => state.filter((item) => item.key !== key));
+      //   });
+      setImages((state) => state.filter((image) => key !== image.key));
     }
   };
 
